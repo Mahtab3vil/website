@@ -1,1 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
 
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3VIL Predictor - Premium Mine Prediction Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #05ffa1;
+            --tertiary: #65e0ff;
+            --dark: #0f1923;
+            --darker: #060c13;
+            --light: #ffffff;
+            --gray: #2a3440;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(6, 12, 19, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--primary), var(--tertiary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .logo::before {
+            content: "★";
+            font-size: 1.2rem;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            transition: color 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), #ff5188);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 42, 109, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 42, 109, 0.4);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-content h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--tertiary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .hero-cta {
+            background: linear-gradient(135deg, var(--primary), #ff5188);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px rgba(255, 42, 109, 0.3);
+        }
+        
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 42, 109, 0.4);
+        }
+        
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .hero-cta:hover::before {
+            left: 100%;
+        }
+        
+        .hero-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        /* ESP Showcase */
+        .esp-showcase {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .esp-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .esp-device {
+            width: 320px;
+            background: rgba(17, 23, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                0 30px 60px rgba(0, 0, 0, 0.2),
+                0 0 30px rgba(255, 42, 109, 0.15);
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(0);
+            }
+            50% {
+                transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(-20px);
+            }
+        }
+        
+        .esp-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(25, 25, 40, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .esp-title {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        
+        .esp-title::before {
+            content: "★";
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .esp-status {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .status-dot.yellow {
+            background: #ffde12;
+            box-shadow: 0 0 10px rgba(255, 222, 18, 0.5);
+        }
+        
+        .status-dot.green {
+            background: var(--secondary);
+            box-shadow: 0 0 10px rgba(5, 255, 161, 0.5);
+        }
+        
+        .esp-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(20, 20, 35, 0.3);
+        }
+        
+        .esp-stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .esp-stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .esp-stat-value {
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .esp-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            padding: 15px;
+            background: rgba(15, 15, 25, 0.4);
+            position: relative;
+            min-height: 275px;
+        }
+        
+        .esp-cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .esp-cell.highlighted {
+            background: rgba(5, 255, 161, 0.2);
+            border: 1px solid rgba(5, 255, 161, 0.3);
+            box-shadow: 0 0 20px rgba(5, 255, 161, 0.2);
+        }
+        
+        .esp-cell.highlighted::after {
+            content: "★";
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .esp-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+            z-index: 10;
+            font-family: 'Outfit', sans-serif;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .esp-message-text {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 42, 109, 0.8);
+            margin-bottom: 5px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .esp-message-subtext {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .esp-controls {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+            background: rgba(20, 20, 35, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .esp-predict {
+            flex: 1;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 42, 109, 0.3);
+        }
+        
+        .esp-reset {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            gap: 5px;
+        }
+        
+        .esp-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(5, 255, 161, 0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+        }
+        
+        .esp-glow-2 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 42, 109, 0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+            animation: glow-2 5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow-2 {
+            0% {
+                transform: scale(1.1);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+        }
+        
+        /* Animated device */
+        .animated-device {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            border-radius: 16px;
+            overflow: hidden;
+            opacity: 0;
+            z-index: 0;
+            animation: device-show 8s infinite;
+            animation-delay: 4s;
+        }
+        
+        @keyframes device-show {
+            0%, 90%, 100% { opacity: 0; }
+            10%, 80% { opacity: 1; }
+        }
+        
+        .device-screen {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 25, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .device-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(5, 255, 161, 0.1), 
+                transparent 40%, 
+                rgba(255, 42, 109, 0.1));
+            z-index: 1;
+        }
+        
+        .device-scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(5, 255, 161, 0.5);
+            box-shadow: 0 0 10px rgba(5, 255, 161, 0.8);
+            z-index: 2;
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        .device-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 2px;
+            padding: 10px;
+        }
+        
+        .device-point {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .device-point::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .device-highlight {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+            opacity: 0;
+            z-index: 2;
+            animation: highlight-pulse 1.5s infinite;
+        }
+        
+        @keyframes highlight-pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        /* Features section */
+        .features {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(5, 255, 161, 0.2);
+        }
+        
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 255, 161, 0.1);
+            border-radius: 12px;
+        }
+        
+        .feature-icon.security {
+            color: var(--primary);
+            background: rgba(255, 42, 109, 0.1);
+        }
+        
+        .feature-icon.accuracy {
+            color: var(--tertiary);
+            background: rgba(101, 224, 255, 0.1);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card.featured {
+            transform: scale(1.05);
+            border-color: rgba(5, 255, 161, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 30px rgba(5, 255, 161, 0.1);
+        }
+        
+        .pricing-card.featured::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 5px 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .price-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .price-title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            color: var(--light);
+        }
+        
+        .price-amount span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .price-duration {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .price-features {
+            margin-bottom: 2rem;
+        }
+        
+        .price-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .price-features li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .price-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .price-buy {
+            background: linear-gradient(135deg, var(--primary), #ff5188);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 42, 109, 0.3);
+        }
+        
+        .price-buy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 42, 109, 0.4);
+        }
+        
+        .price-buy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .price-buy:hover::before {
+            left: 100%;
+        }
+        
+        .featured .price-buy {
+            background: linear-gradient(135deg, var(--secondary), #00d47a);
+            box-shadow: 0 4px 15px rgba(5, 255, 161, 0.3);
+        }
+        
+        .featured .price-buy:hover {
+            box-shadow: 0 8px 25px rgba(5, 255, 161, 0.4);
+        }
+        
+        /* FAQ Section */
+        .faq {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .faq-item:hover {
+            border-color: rgba(5, 255, 161, 0.2);
+        }
+        
+        .faq-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question::after {
+            content: "+";
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            margin-top: 1rem;
+            display: none;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .cta-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            overflow: hidden;
+        }
+        
+        .cta-circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .cta-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            background: var(--primary);
+            opacity: 0.3;
+        }
+        
+        .cta-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            background: var(--secondary);
+            opacity: 0.3;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 4rem 0 2rem;
+            background: rgba(6, 12, 19, 0.8);
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .footer-about h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-about h3::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-links h3::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        .footer-links a:hover {
+            color: var(--light);
+        }
+        
+        .footer-links a::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            opacity: 0.4;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .bg-circle:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            top: 10%;
+            right: -100px;
+            background: radial-gradient(circle, rgba(5, 255, 161, 0.2), transparent 70%);
+            opacity: 0.4;
+        }
+        
+        .bg-circle:nth-child(2) {
+            width: 800px;
+            height: 800px;
+            bottom: -200px;
+            left: -200px;
+            background: radial-gradient(circle, rgba(255, 42, 109, 0.2), transparent 70%);
+            opacity: 0.3;
+        }
+        
+        .bg-circle:nth-child(3) {
+            width: 500px;
+            height: 500px;
+            top: 40%;
+            left: 30%;
+            background: radial-gradient(circle, rgba(101, 224, 255, 0.2), transparent 70%);
+            opacity: 0.2;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                margin-bottom: 1rem;
+            }
+            
+            .hero {
+                padding-top: 12rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="background">
+        <div class="bg-grid"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">3VIL Predictor</div>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <a href="https://discord.com/invite/your-discord-invite" target="_blank" class="cta-button">Join Discord</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1>The Ultimate <span>Prediction Tool</span> For High Profit Mines</h1>
+                <p>3VIL Predictor provides advanced algorithms to locate safe spots in any mine game. Increase your win rate dramatically with our cutting-edge technology.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="hero-cta">Get Access Now</a>
+                    <a href="#features" class="hero-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"></path>
+                        </svg>
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            
+            <div class="esp-showcase">
+                <div class="esp-container">
+                    <div class="esp-glow"></div>
+                    <div class="esp-glow-2"></div>
+                    
+                    <div class="esp-device">
+                        <div class="esp-header">
+                            <div class="esp-title">3VIL PREDICTOR</div>
+                            <div class="esp-status">
+                                <div class="status-dot yellow"></div>
+                                <div class="status-dot green"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="esp-stats">
+                            <div class="esp-stat-box">
+                                <div class="esp-stat-label">SAFE SPOTS</div>
+                                <div class="esp-stat-value">4</div>
+                            </div>
+                            <div class="esp-stat-box">
+                                <div class="esp-stat-label">ACCURACY</div>
+                                <div class="esp-stat-value">93%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="esp-grid">
+                            <!-- Grid cells -->
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell highlighted"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell highlighted"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell highlighted"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell"></div>
+                            <div class="esp-cell highlighted"></div>
+                            <div class="esp-cell"></div>
+                            
+                            <!-- Animated device for showing scanning effect -->
+                            <div class="animated-device">
+                                <div class="device-screen">
+                                    <div class="device-overlay"></div>
+                                    <div class="device-scan-line"></div>
+                                    <div class="device-grid">
+                                        <!-- Grid will be generated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="esp-controls">
+                            <button class="esp-predict">QUICK PREDICT</button>
+                            <button class="esp-reset">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8V3" />
+                                </svg>
+                                RESET
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Advanced Features</h2>
+                <p>3VIL Predictor comes packed with powerful features designed to maximize your winning potential in any mines game.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                        </svg>
+                    </div>
+                    <h3>Advanced Algorithm</h3>
+                    <p>Our proprietary prediction algorithm analyzes patterns in real-time to identify the safest spots with over 90% accuracy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon security">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h3>Undetectable Operation</h3>
+                    <p>Our ESP operates completely undetected by any anti-cheat systems, ensuring your account stays safe and secure.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon accuracy">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                    <h3>High Accuracy Rate</h3>
+                    <p>Consistently achieve 90-95% prediction accuracy across all supported mine games, dramatically increasing your profits.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                    </div>
+                    <h3>Real-Time Prediction</h3>
+                    <p>Get instant predictions with a single click, allowing you to make quick decisions with confidence.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon security">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                        </svg>
+                    </div>
+                    <h3>Comprehensive Guide</h3>
+                    <p>Full documentation and strategy guides to help you maximize your profits in any mines game.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon accuracy">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="2" y1="12" x2="22" y2="12" />
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                    </div>
+                    <h3>Global Support</h3>
+                    <p>Works on all major mines game providers and is continuously updated to support new platforms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pricing Plans</h2>
+                <p>Choose the plan that best fits your needs. All plans include access to our premium features and dedicated support.</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="price-title">Weekly</h3>
+                    <div class="price-amount">$XX <span>/week</span></div>
+                    <div class="price-duration">7 days of premium access</div>
+                    <div class="price-features">
+                        <ul>
+                            <li>Full Predictor Access</li>
+                            <li>24/7 Discord Support</li>
+                            <li>Basic Strategy Guide</li>
+                            <li>90% Accuracy Rate</li>
+                            <li>1 Device License</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.com/invite/your-discord-invite" target="_blank" class="price-buy">Get Started</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3 class="price-title">Monthly</h3>
+                    <div class="price-amount">$XX <span>/month</span></div>
+                    <div class="price-duration">30 days of premium access</div>
+                    <div class="price-features">
+                        <ul>
+                            <li>Full Predictor Access</li>
+                            <li>Priority Discord Support</li>
+                            <li>Advanced Strategy Guide</li>
+                            <li>93% Accuracy Rate</li>
+                            <li>2 Device License</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.com/invite/your-discord-invite" target="_blank" class="price-buy">Get Started</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3 class="price-title">Lifetime</h3>
+                    <div class="price-amount">$XXX <span>/once</span></div>
+                    <div class="price-duration">Permanent premium access</div>
+                    <div class="price-features">
+                        <ul>
+                            <li>Full Predictor Access</li>
+                            <li>VIP Discord Support</li>
+                            <li>Elite Strategy Guide</li>
+                            <li>95% Accuracy Rate</li>
+                            <li>3 Device License</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.com/invite/your-discord-invite" target="_blank" class="price-buy">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to the most common questions about 3VIL Predictor.</p>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item active">
+                    <div class="faq-question">How does 3VIL Predictor work?</div>
+                    <div class="faq-answer" style="display: block;">
+                        3VIL Predictor uses advanced algorithms to analyze patterns in mines games to predict safe spots with high accuracy. Our technology can identify the most probable safe areas without interfering with the game's mechanics.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Is using 3VIL Predictor safe for my account?</div>
+                    <div class="faq-answer">
+                        Yes, our predictor operates completely undetected by any anti-cheat systems. It works as an overlay and doesn't modify any game files, making it 100% safe for your gaming accounts.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What accuracy rate can I expect?</div>
+                    <div class="faq-answer">
+                        3VIL Predictor maintains an accuracy rate between 90-95% depending on the game and conditions. While no prediction system can be 100% accurate, our tool significantly increases your chances of winning.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How do I get started after purchase?</div>
+                    <div class="faq-answer">
+                        After completing your purchase, you'll receive an invite to our private Discord server where you'll get your license key and access to download instructions. Our support team will guide you through the setup process.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer refunds?</div>
+                    <div class="faq-answer">
+                        We offer a 24-hour refund policy if the product doesn't work as described. However, due to the digital nature of our product, refunds are not available after the license key has been used for more than 24 hours.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="cta-background">
+            <div class="cta-circle"></div>
+            <div class="cta-circle"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Winning?</h2>
+                <p>Join thousands of satisfied users who have transformed their mines game experience with 3VIL Predictor. Get access today and start increasing your profits!</p>
+                <a href="https://discord.com/invite/your-discord-invite" target="_blank" class="hero-cta">Join Our Discord</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>About 3VIL Predictor</h3>
+                    <p>3VIL Predictor is the leading solution for mines game prediction, offering unmatched accuracy and reliability for serious players.</p>
+                    <div class="footer-social">
+                        <a href="#">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                            </svg>
+                        </a>
+                        <a href="#">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                            </svg>
+                        </a>
+                        <a href="https://discord.com/invite/your-discord-invite" target="_blank">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                            </svg>
+                        </a>
+                        <a href="#">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="https://discord.com/invite/your-discord-invite" target="_blank">Discord Server</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Video Tutorials</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 3VIL Predictor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Interaction
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(faqItem => {
+                    faqItem.classList.remove('active');
+                    const answer = faqItem.querySelector('.faq-answer');
+                    answer.style.display = 'none';
+                });
+                
+                // If clicking on a closed item, open it
+                if (!isActive) {
+                    item.classList.add('active');
+                    const answer = item.querySelector('.faq-answer');
+                    answer.style.display = 'block';
+                }
+            });
+        });
+        
+        // Create device grid for animation
+        const deviceGrid = document.querySelector('.device-grid');
+        
+        // Generate highlights at random positions with a delay
+        function createHighlights() {
+            // Clear any existing highlights
+            const existingHighlights = document.querySelectorAll('.device-highlight');
+            existingHighlights.forEach(highlight => highlight.remove());
+            
+            // Create between 2-4 highlights
+            const count = Math.floor(Math.random() * 3) + 2;
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const highlight = document.createElement('div');
+                    highlight.className = 'device-highlight';
+                    
+                    // Random position
+                    const top = Math.floor(Math.random() * 100);
+                    const left = Math.floor(Math.random() * 100);
+                    
+                    highlight.style.top = `${top}%`;
+                    highlight.style.left = `${left}%`;
+                    
+                    deviceGrid.appendChild(highlight);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        highlight.remove();
+                    }, 2000);
+                    
+                }, i * 500);
+            }
+        }
+        
+        // Start creating highlights every few seconds
+        setInterval(createHighlights, 3000);
+        
+        // Simulate ESP device changing display occasionally
+        let showingMessage = false;
+        
+        function toggleDeviceState() {
+            const espGrid = document.querySelector('.esp-grid');
+            
+            if (Math.random() > 0.7 && !showingMessage) {
+                // Show a message occasionally
+                const message = document.createElement('div');
+                message.className = 'esp-message';
+                message.innerHTML = `
+                    <div class="esp-message-text">START A GAME FIRST</div>
+                    <div class="esp-message-subtext">Waiting for a new game...</div>
+                `;
+                
+                espGrid.appendChild(message);
+                showingMessage = true;
+                
+                // Remove message after a few seconds
+                setTimeout(() => {
+                    message.remove();
+                    showingMessage = false;
+                }, 4000);
+            }
+        }
+        
+        // Toggle device state occasionally
+        setInterval(toggleDeviceState, 8000);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
